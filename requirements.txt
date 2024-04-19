@@ -1,0 +1,8 @@
+google-cloud-pubsub==2.19.0
+python-dotenv==1.0.1
+pymongo
+pyodbc
+IP2Location
+wheel
+apache-beam[gcp]
+google-cloud-storage

@@ -1,0 +1,7 @@
+# Resource for Project
+resource/.venv
+resource/private_key.json
+
+# Clean cache
+*/__pycache__/*
+__pycache__/*
