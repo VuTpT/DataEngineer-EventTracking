@@ -1,6 +1,8 @@
 # Resource for Project
-resource/.venv
+./venv
+resource/.env
 resource/private_key.json
+resource/token_static.txt
 
 # Clean cache
 */__pycache__/*
