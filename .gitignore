@@ -1,5 +1,6 @@
 # Resource for Project
 ./venv
+resource/*
 resource/.env
 resource/private_key.json
 resource/token_static.txt

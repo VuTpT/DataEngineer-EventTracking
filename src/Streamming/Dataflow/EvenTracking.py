@@ -7,6 +7,9 @@ import argparse
 import IP2Location
 import apache_beam as beam
 
+from os.path import join, dirname
+from dotenv import load_dotenv
+
 from datetime import datetime
 from apache_beam.io import fileio
 from apache_beam.io import mongodbio
@@ -23,7 +26,12 @@ from google.cloud import storage
 from typing import NamedTuple, List, Optional
 from pymongo import MongoClient
 
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = '/home/vutptit/Test/secret_key.json'
+
+dotenv_path = join('/home/kafka/GCP/resource/', '.env')
+
+load_dotenv(dotenv_path)
+
+os.environ['GOOGLE_APPLICATION_CREDENTIALS']
 
 class Option(NamedTuple):
     option_label: str
@@ -179,8 +187,8 @@ class TransformBeforeToMongDBFn(beam.DoFn):
             rec = self.databaseIPs.get_all(row['ip'])
             row['country'] = rec.country_long
 
-        database = self.mongodbClient['testdb']
-        collection = database['output']
+        database = self.mongodbClient[os.environ['DATABASE_OUTPUT']]
+        collection = database[os.environ['COLLECTION_OUTPUT']]
 
         device = collection.find_one({
             'ip' : element["ip"],
@@ -299,7 +307,7 @@ def run():
     )
     
     (mongo_transformed.create_device_id_event
-        | "WriteParsedToMongoDB" >> WriteToMongoDB(uri=mongo_url, db='testdb', coll='output')
+        | "WriteParsedToMongoDB" >> WriteToMongoDB(uri=mongo_url, db=os.environ['DATABASE_OUTPUT'], coll=os.environ['COLLECTION_OUTPUT'])
     )
 
 
